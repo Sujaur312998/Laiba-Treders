@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState, useTransition } from "react";
-
+import { login } from '@/actions/login'
 
 const formData = {
     headerDescription: 'Welcome Back',
@@ -42,9 +42,8 @@ const SignInForm = () => {
         setError('');
         setSuccess('');
         startTransition(() => {
-            console.log(values)
+            login(values)
         })
-
     }
     return (
         <div>
