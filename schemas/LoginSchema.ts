@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { phoneRegExp } from '@/lib/register_data'
+import { phoneRegExp } from '@/lib/data'
 
 
 export const LoginSchema = z.object({

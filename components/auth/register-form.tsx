@@ -14,11 +14,12 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
-import { villageName } from "@/lib/register_data";
+import { villageName, host } from "@/lib/data";
 import { Input } from "@/components/ui/input"
 import { RegistrationSchema } from '@/schemas/RegistrationSchema'
 import axios from 'axios'
 import Swal from 'sweetalert2';
+
 
 const formData = {
     headerDescription: 'Welcome Back',
@@ -71,7 +72,7 @@ const RegisterForm = () => {
 
     const createUser = (data: z.infer<typeof RegistrationSchema>) => {
         try {
-            axios.post('/api/auth/createUser', data)
+            axios.post(`${host}/api/auth/createUser`, data)
                 .then(res => {
                     successToast(res.data.message)
                     form.reset()

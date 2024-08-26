@@ -7,32 +7,31 @@ import {
     authRouetes,
     DEFAULT_LOGIN_REDIRECT
 } from '@/routes'
+import { jwtDecode } from "jwt-decode";
+
+
 
 const { auth } = NextAuth(authConfig) as NextAuthResult
 
-type AppRouteHandlerFnContext = {
-    params?: Record<string, string | string[]>
-}
+// type AppRouteHandlerFnContext = {
+//     params?: Record<string, string | string[]>
+// }
 
 export const authMiddleware = auth(
     (
         req: NextRequest & { auth: Session | null },
-        ctx: AppRouteHandlerFnContext
+        // ctx: AppRouteHandlerFnContext
     ): Response | void => {
-        // console.log('auth middleware: ', req.nextUrl)
+        const { nextUrl, auth } = req
+        let { accessToken, refreshToken }: any = auth || ''
+        let isAccessToken: any = !!accessToken ? jwtDecode(accessToken) : false
+        let isRefreshToken: any = !!refreshToken ? jwtDecode(refreshToken) : false
+        let isLoggedIn = isAccessToken.exp * 1000 > new Date().getTime() || isRefreshToken.exp * 1000 > new Date().getTime()
 
-        const { nextUrl } = req
-        const isLoggedIn = !!req.auth
 
         const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
         const isPublicRoutes = publicRoutes.includes(nextUrl.pathname)
         const isAuthRoutes = authRouetes.includes(nextUrl.pathname)
-
-        // console.log("isLoggedIn", isLoggedIn);
-        // console.log("isApiAuthRoute", isApiAuthRoute);
-        // console.log("isPublicRoutes", isPublicRoutes);
-        // console.log("isAuthRoutes", isAuthRoutes);
-
 
         if (isApiAuthRoute) {
             return NextResponse.next()
@@ -45,10 +44,7 @@ export const authMiddleware = auth(
             return NextResponse.next()
         }
 
-
         if (!isLoggedIn && !isPublicRoutes) {
-            console.log(nextUrl.search);
-
             let callbackUrl = nextUrl.pathname
             if (nextUrl.search) {
                 callbackUrl += nextUrl.search
@@ -59,30 +55,6 @@ export const authMiddleware = auth(
 
         return NextResponse.next()
     })
-
-
-
-// export function middleware2(req: NextRequest) {
-//     console.log('middleware2: ', req.nextUrl)
-
-//     const currentUser = req.cookies.get('currentUser')?.value
-
-//     if (
-//         protectedRoutes.includes(req.nextUrl.pathname) &&
-//         (!currentUser || Date.now() > JSON.parse(currentUser).expiredAt)
-//     ) {
-//         req.cookies.delete('currentUser')
-//         const response = NextResponse.redirect(new URL('/login', req.url))
-//         response.cookies.delete('currentUser')
-
-//         return response
-//     }
-
-//     if (authRoutes.includes(req.nextUrl.pathname) && currentUser) {
-//         return NextResponse.redirect(new URL('/profile', req.url))
-//     }
-// }
-
 
 export const config = {
     matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)']
