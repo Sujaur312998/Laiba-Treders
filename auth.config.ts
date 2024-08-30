@@ -10,7 +10,6 @@ import { jwtDecode } from "jwt-decode";
 
 const secret: any = process.env.AUTH_SECRET
 
-
 export default {
     providers: [
         Credentials({
@@ -39,6 +38,19 @@ export default {
                             const checkPassword = await bcrypt.compare(password, user.hash_password)
                             if (checkPassword) {
                                 delete user.hash_password
+
+                                const accessToken: string = jwt.sign(
+                                    { userId: user.id }, secret, { expiresIn: 1 * 60 }
+                                )
+
+
+                                const refreshToken = jwt.sign(
+                                    { userId: user.id }, secret, { expiresIn: 120 * 60 }
+                                )
+
+                                user.accessToken = accessToken
+                                user.refreshToken = refreshToken
+
                                 return user
                             } else {
                                 return null
@@ -58,22 +70,48 @@ export default {
         signIn: '/signin',
     },
     callbacks: {
-        async jwt({ token, user, account }) {
+        jwt: async ({ token, user, account }: any) => {
 
-            if (user) {
-                token.accessToken = jwt.sign(
-                    { userId: user.id }, secret, { expiresIn: 1 * 60 }
-                )
-
-                token.refreshToken = jwt.sign(
-                    { userId: user.id }, secret, { expiresIn: 20 * 60 }
-                );
+            if (token.accessToken) {
+                const decodedToken: any = jwtDecode(token.accessToken);
+                token.accessTokenExpires = decodedToken?.exp * 1000;
             }
 
-            return token;
+            if (account && user) {
+                token.accessToken = user.accessToken
+                token.refreshToken = user.refreshToken
+                return token
+            }
+
+
+            if (Date.now() < token.accessTokenExpires) {
+                // console.log("**** returning previous token ******",token);
+                return token;
+            }
+            // let accessToken = jwt.sign(
+            //     { userId: user.id }, secret, { expiresIn: 1 * 60 }
+            // )
+
+            // console.log(accessToken);
+            
+            //     token.refreshToken = jwt.sign(
+            //         { userId: user.id }, secret, { expiresIn: '7d' }
+            //     )
+
+            //     return token
+            // }
+
+            // console.log("session",token);
+
+
+
+
+            return token
         },
 
-        async session({ session, token }) {
+        session: async ({ session, token }) => {
+
+
             // let accessToken: any = token.accessToken
             // let refreshToken: any = token.refreshToken
 
@@ -103,7 +141,6 @@ export default {
                 accessToken: token.accessToken,
                 refreshToken: token.refreshToken,
             }
-
 
             return sessonToken
         }

@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
 
 
 const formData = {
-    headerDescription: 'Welcome Back',
+    headerDescription: 'Be a Proud Member',
     headerTitle: 'Laiba Treders',
     backButtonHref: '/signin',
     backButtonLevel: 'Already have an account?'

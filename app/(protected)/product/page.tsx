@@ -1,12 +1,18 @@
-import { auth } from '@/auth'
+'use client';
+import { useSession } from 'next-auth/react';
+// import type { Metadata } from "next";
 
-const Product = async () => {
-    const session = await auth()
-    console.log(session);
+
+// export const metadata: Metadata = {
+//     title: "Product"
+// };
+
+const Product = () => {
+    const session = useSession();
 
     return (
         <div>
-            Product here
+            <p> Welcome {session?.data?.user?.name}</p>
         </div>
     )
 }

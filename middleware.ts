@@ -8,25 +8,32 @@ import {
     DEFAULT_LOGIN_REDIRECT
 } from '@/routes'
 import { jwtDecode } from "jwt-decode";
-
+import { signOut } from '@/auth';
 
 
 const { auth } = NextAuth(authConfig) as NextAuthResult
 
-// type AppRouteHandlerFnContext = {
-//     params?: Record<string, string | string[]>
-// }
+type AppRouteHandlerFnContext = {
+    params?: Record<string, string | string[]>
+}
 
-export const authMiddleware = auth(
+export const  authMiddleware =  auth(
     (
         req: NextRequest & { auth: Session | null },
-        // ctx: AppRouteHandlerFnContext
+        ctx: AppRouteHandlerFnContext
     ): Response | void => {
         const { nextUrl, auth } = req
         let { accessToken, refreshToken }: any = auth || ''
+
         let isAccessToken: any = !!accessToken ? jwtDecode(accessToken) : false
+        isAccessToken = isAccessToken.exp * 1000 > new Date().getTime()
+
         let isRefreshToken: any = !!refreshToken ? jwtDecode(refreshToken) : false
-        let isLoggedIn = isAccessToken.exp * 1000 > new Date().getTime() || isRefreshToken.exp * 1000 > new Date().getTime()
+        isRefreshToken = isRefreshToken.exp * 1000 > new Date().getTime()
+
+        let isLoggedIn = isAccessToken || isRefreshToken
+
+        console.log(isAccessToken, isRefreshToken, isLoggedIn);
 
 
         const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)

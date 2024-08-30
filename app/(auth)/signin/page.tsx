@@ -1,9 +1,17 @@
 import SignInForm from '@/components/auth/signin-form'
+import type { Metadata } from "next";
 
-const Login = () => {
+
+export const metadata: Metadata = {
+    title: "Signin",
+    description: "Welcome Back to Laiba Treders",
+};
+
+
+const signin = () => {
     return (
         <SignInForm />
     )
 }
 
-export default Login
+export default signin
