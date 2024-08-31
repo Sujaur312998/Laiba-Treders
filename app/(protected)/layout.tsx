@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavBar";
-
-export const metadata: Metadata = {
-    title: "Dashboard"
-};
+import { usePathname } from 'next/navigation';
 
 
-const AuthLayout = ({
+
+const protectedLayout = ({
     children
 }: {
     children: React.ReactNode
@@ -23,4 +20,4 @@ const AuthLayout = ({
     )
 }
 
-export default AuthLayout
+export default protectedLayout

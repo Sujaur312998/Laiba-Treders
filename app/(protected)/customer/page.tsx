@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Product"
+    title: "Customer"
 };
 
-const Dashboard=()=>{
+
+const Customer=()=>{
     return(
         <div>
-            Dashboard here 
+            Customer here
         </div>
     )
 }
 
-export default Dashboard
+export default Customer

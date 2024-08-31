@@ -77,7 +77,7 @@ const sideNavData: SideNavItem[] = [
     },
     {
         icon: <BiNotepad className="m-auto" />,
-        href: "/contact",
+        href: "/tile",
         title: "Tile Ledger"
     },
     {
@@ -109,13 +109,13 @@ const SideNavbar: React.FC = () => {
         }));
     };
 const toogle_top_navbar = useSelector((state: RootState) => state.navSlice.toogle_top_navbar)
-    const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
+const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
 
     return (
         <div
             className={cn(
-                "h-screen bg-gray-100 shadow-sm overflow-auto transition-all duration-300 ease-in-out flex flex-col",
-                toogle_top_navbar ? "w-0" : toggle_side_navbar ? "w-64 " : "w-20",
+                "h-screen bg-gray-100 shadow-sm overflow-auto transition-all duration-200 ease-in-out flex flex-col",
+                toogle_top_navbar ? "w-0" : toggle_side_navbar ? "w-auto " : "w-20",
             )}
         >
             <div className="space-y-2 p-3 flex-grow">
@@ -168,7 +168,7 @@ const toogle_top_navbar = useSelector((state: RootState) => state.navSlice.toogl
                                     )}
                                 </div>
                                 {
-                                    item.sublist && expanded[item.href] && (
+                                    toggle_side_navbar && item.sublist && expanded[item.href] && (
                                         <ul className="pl-8 mt-2 space-y-1">
                                             {item.sublist.map((subItem, subIndex) => (
                                                 <li key={subIndex}>

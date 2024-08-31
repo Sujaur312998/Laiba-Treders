@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Product"
+    title: "Tile Ledger"
 };
 
-const Dashboard=()=>{
+
+const Tile=()=>{
     return(
         <div>
-            Dashboard here 
+            Tile here
         </div>
     )
 }
 
-export default Dashboard
+export default Tile
