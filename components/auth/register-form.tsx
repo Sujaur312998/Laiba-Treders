@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -19,7 +18,9 @@ import { Input } from "@/components/ui/input"
 import { RegistrationSchema } from '@/schemas/RegistrationSchema'
 import axios from 'axios'
 import Swal from 'sweetalert2';
-
+import { TbLoader3 } from "react-icons/tb";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const formData = {
     headerDescription: 'Be a Proud Member',
@@ -56,6 +57,7 @@ const failedToast = () => {
 }
 
 const RegisterForm = () => {
+    const [isLoading, setIsLoading] = useState<boolean | undefined>(false);
     const form = useForm<z.infer<typeof RegistrationSchema>>({
         resolver: zodResolver(RegistrationSchema),
         defaultValues: {
@@ -74,12 +76,13 @@ const RegisterForm = () => {
         try {
             axios.post(`${host}/api/auth/createUser`, data)
                 .then(res => {
+                    setIsLoading(false)
                     successToast(res.data.message)
                     form.reset()
                 })
                 .catch(err => {
                     failedToast()
-
+                    setIsLoading(false)
                 })
         } catch (error) {
             console.log(error);
@@ -87,16 +90,18 @@ const RegisterForm = () => {
     }
 
     const onSubmit = (values: z.infer<typeof RegistrationSchema>) => {
+        setIsLoading(true)
         try {
             axios.post('/api/auth/checkUserPhoneNo', { phoneNo: values.phoneNo })
                 .then(res => {
                     if (res.status === 200) {
                         createUser(values)
                     } else {
+                        setIsLoading(false)
                         failedToast()
                     }
                 })
-                .catch(err =>{
+                .catch(err => {
                     failedToast()
                 }
                 )
@@ -118,7 +123,18 @@ const RegisterForm = () => {
             >
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
+                    <form onSubmit={form.handleSubmit(onSubmit)}
+                        className={
+                            cn("space-y-6", isLoading ? 'blur-sm' : '')
+                        }>
+
+                        {
+                            isLoading && (
+                                <div role="status" className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+                                    <TbLoader3 className="text-6xl text-rose-600 animate-spin" />
+                                </div>
+                            )
+                        }
 
                         {/* গ্রাহকের নাম */}
 

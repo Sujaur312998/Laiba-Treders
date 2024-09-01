@@ -1,22 +1,23 @@
 "use client";
-import * as z from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import CardWrapper from "./CardWrapper"
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CardWrapper from "./CardWrapper";
 import { LoginSchema } from "@/schemas/LoginSchema";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { TbLoader3 } from "react-icons/tb";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
-import { login } from '@/actions/login'
+import { login } from '@/actions/login';
+import { cn } from "@/lib/utils";
 
 const formData = {
     headerDescription: 'Welcome Back',
@@ -26,8 +27,8 @@ const formData = {
 }
 
 const SignInForm = () => {
-    const [error, setError] = useState<string | undefined>('')
-    const [success, setSuccess] = useState<string | undefined>('')
+    const [error, setError] = useState<string | undefined>('');
+    const [success, setSuccess] = useState<string | undefined>('');
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof LoginSchema>>({
@@ -36,17 +37,18 @@ const SignInForm = () => {
             phoneNo: "",
             password: ""
         }
-    })
+    });
 
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
         setError('');
         setSuccess('');
         startTransition(() => {
-            login(values)
-        })
-    }
+            login(values);
+        });
+    };
+
     return (
-        <div>
+        <div className="flex items-center justify-center min-h-screen">
             <CardWrapper
                 headerDescription={formData.headerDescription}
                 headerTitle={formData.headerTitle}
@@ -54,9 +56,24 @@ const SignInForm = () => {
                 backButtonLevel={formData.backButtonLevel}
                 showSocial
             >
+                {
+                    isPending && (
+                        <div role="status" className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+                            <TbLoader3 className="text-5xl text-rose-600 animate-spin blur-0" />
+                        </div>
+                    )
+                }
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className={
+                            cn("space-y-6", isPending ? 'blur-sm' : '')
+                        }
+                    >
+
+
+
                         <FormField
                             control={form.control}
                             name="phoneNo"
@@ -74,6 +91,7 @@ const SignInForm = () => {
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name="password"
@@ -85,19 +103,20 @@ const SignInForm = () => {
                                             {...field}
                                             placeholder="******"
                                             type="password"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button className='w-full' type="submit">Submit</Button>
+
+                        <Button className='w-full' type="submit" disabled={isPending}>Submit</Button>
                     </form>
                 </Form>
-
             </CardWrapper>
         </div>
-    )
-}
+    );
+};
 
-export default SignInForm
+export default SignInForm;

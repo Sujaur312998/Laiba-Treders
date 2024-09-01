@@ -16,7 +16,6 @@ import type { RootState } from '@/app/store'
 import { useSelector } from "react-redux"
 
 
-// Define types for sublist and sideNavData
 interface SublistItem {
     href: string;
     title: string;
@@ -30,7 +29,6 @@ interface SideNavItem {
 }
 
 const sideNavData: SideNavItem[] = [
-    // Your sideNavData remains the same
     {
         icon: <TbLayoutDashboardFilled className="m-auto" />,
         href: "/dashboard",
@@ -108,87 +106,81 @@ const SideNavbar: React.FC = () => {
             [href]: !prev[href]
         }));
     };
-const toogle_top_navbar = useSelector((state: RootState) => state.navSlice.toogle_top_navbar)
-const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
+
+    const toogle_top_navbar = useSelector((state: RootState) => state.navSlice.toogle_top_navbar)
+    const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
 
     return (
         <div
             className={cn(
-                "h-screen bg-gray-100 shadow-sm overflow-auto transition-all duration-200 ease-in-out flex flex-col",
-                toogle_top_navbar ? "w-0" : toggle_side_navbar ? "w-auto " : "w-20",
+                "h-screen bg-gray-100 shadow-sm overflow-auto flex flex-col transition-all duration-200 ease-in-out",
+                toogle_top_navbar ? "w-0" : toggle_side_navbar ? "w-64" : "w-20", // Use fixed width values for smooth transitions
             )}
         >
             <div className="space-y-2 p-3 flex-grow">
                 <ul>
-                    {
-                        sideNavData.map((item, index) => (
-                            <li key={index} className='my-2'>
-                                <div
-                                    className={cn(
-                                        "relative flex items-center space-x-4 p-3 rounded-lg transition-colors duration-300 ease-in-out hover:bg-gray-200 hover:text-rose-600 cursor-pointer",
-                                        pathname === item.href && "bg-gray-200 text-rose-600 border-l-4 border-rose-600"
-                                    )}
-                                // onClick={() => item.sublist && handleToggle(item.href)}
-                                >
-                                    <Link href={item.href} className="flex w-full items-center">
-                                        <span className={cn(
-                                            "flex-shrink-0",
-                                            toggle_side_navbar ? "w-8" : "w-6"
-                                        )}>
-                                            {item.icon}
-                                        </span>
-                                        {
-                                            toggle_side_navbar && (
-                                                <span
-                                                    className={cn(
-                                                        "ml-3 transition-opacity duration-300",
-                                                        toggle_side_navbar ? "opacity-100" : "opacity-0",
-                                                        !toggle_side_navbar && "group-hover:opacity-100 absolute left-full ml-2 whitespace-nowrap"
-                                                    )}
-                                                >
-                                                    {item.title}
-                                                </span>
-                                            )}
-                                    </Link>
-
-                                    {item.sublist && toggle_side_navbar && (
+                    {sideNavData.map((item, index) => (
+                        <li key={index} className='my-2'>
+                            <div
+                                className={cn(
+                                    "relative flex items-center space-x-1 p-3 rounded-lg transition-colors duration-300 ease-in-out hover:bg-gray-200 hover:text-rose-600 cursor-pointer",
+                                    pathname === item.href && "bg-gray-200 text-rose-600 border-l-4 border-rose-600"
+                                )}
+                                onClick={() => item.sublist && handleToggle(item.href)} // Ensure toggle happens on click
+                            >
+                                <Link href={item.href} className="flex w-full items-center">
+                                    <span className={cn(
+                                        "flex-shrink-0 transition-all duration-300", // Ensure smooth icon size transition
+                                        toggle_side_navbar ? "w-8" : "w-6"
+                                    )}>
+                                        {item.icon}
+                                    </span>
+                                    {toggle_side_navbar && (
                                         <span
                                             className={cn(
-                                                "ml-auto",
-                                                expanded[item.href] ? "rotate-90" : "rotate-0",
-                                                "transition-transform duration-300 ease-in-out"
+                                                "ml-3 transition-all duration-300 text-md",
+                                                toggle_side_navbar ? "opacity-100" : "opacity-100"
                                             )}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleToggle(item.href);
-                                            }}
                                         >
-                                            <MdKeyboardArrowRight className="text-lg" />
+                                            {item.title}
                                         </span>
                                     )}
-                                </div>
-                                {
-                                    toggle_side_navbar && item.sublist && expanded[item.href] && (
-                                        <ul className="pl-8 mt-2 space-y-1">
-                                            {item.sublist.map((subItem, subIndex) => (
-                                                <li key={subIndex}>
-                                                    <Link
-                                                        href={subItem.href}
-                                                        className={cn(
-                                                            "flex items-center space-x-4 p-2 rounded-lg transition-colors duration-300 ease-in-out hover:bg-gray-100 hover:text-rose-600",
-                                                            pathname === subItem.href ? "bg-gray-100 text-rose-600" : "text-gray-600"
-                                                        )}
-                                                    >
-                                                        <span className="text-sm"> &bull; {subItem.title}</span>
-                                                    </Link>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )
-                                }
-                            </li>
-                        ))
-                    }
+                                </Link>
+
+                                {item.sublist && toggle_side_navbar && (
+                                    <button
+                                        className={cn(
+                                            "ml-auto transition-transform duration-300 ease-in-out",
+                                            expanded[item.href] ? "rotate-90" : "rotate-0"
+                                        )}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleToggle(item.href);
+                                        }}
+                                    >
+                                        <MdKeyboardArrowRight className="hover:text-xl" />
+                                    </button>
+                                )}
+                            </div>
+                            {toggle_side_navbar && item.sublist && expanded[item.href] && (
+                                <ul className="pl-8 mt-2 space-y-1">
+                                    {item.sublist.map((subItem, subIndex) => (
+                                        <li key={subIndex}>
+                                            <Link
+                                                href={subItem.href}
+                                                className={cn(
+                                                    "flex items-center space-x-4 p-2 rounded-lg transition-colors duration-300 ease-in-out hover:bg-gray-100 hover:text-rose-600",
+                                                    pathname === subItem.href ? "bg-gray-100 text-rose-600" : "text-gray-600"
+                                                )}
+                                            >
+                                                <span className="text-sm"> &bull; {subItem.title}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </li>
+                    ))}
                 </ul>
             </div>
             <div className="bg-gray-100 text-rose-600 flex items-center justify-center h-16 mt-auto border-t border-gray-200">

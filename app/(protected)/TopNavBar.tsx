@@ -99,7 +99,7 @@ const TopNavbar = () => {
                         className="rounded-full w-10 h-10 text-rounded-md"
                     />
                 </button>
-                <button className="hover:text-rose-700 text-3xl md:hidden" onClick={() => dispatch(toggleTopNavBar(!toogle_top_navbar))}>
+                <button className="hover:text-rose-700 text-3xl md:hidden mr-4 ml-2" onClick={() => dispatch(toggleTopNavBar(!toogle_top_navbar))}>
                     <HiOutlineMenu />
                 </button>
             </div>

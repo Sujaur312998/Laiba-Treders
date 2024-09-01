@@ -40,12 +40,12 @@ export default {
                                 delete user.hash_password
 
                                 const accessToken: string = jwt.sign(
-                                    { userId: user.id }, secret, { expiresIn: 1 * 60 }
+                                    { userId: user.id }, secret, { expiresIn: '1d' }
                                 )
 
 
                                 const refreshToken = jwt.sign(
-                                    { userId: user.id }, secret, { expiresIn: 120 * 60 }
+                                    { userId: user.id }, secret, { expiresIn: '7d' }
                                 )
 
                                 user.accessToken = accessToken
