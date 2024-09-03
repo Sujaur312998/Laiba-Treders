@@ -43,7 +43,7 @@ const TopNavbar = () => {
     const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
 
     return (
-        <nav className='flex items-center justify-between w-full h-20 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-sky-200 to-gray-100'>
+        <nav className='flex fixed items-center justify-between w-full h-20 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-sky-200 to-gray-100 z-50'>
             
             {/* 1st section */}
             <div className='flex'>
@@ -65,7 +65,7 @@ const TopNavbar = () => {
             {/* 2nd section */}
             <div className={cn(
                 'absolute md:static w-full justify-end text-center min-h-auto left-0 md:justify md:justify-center md:items-center p-3 md:rounded-full rounded-br-lg rounded-bl-lg md:w-auto bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-sky-200 to-gray-100',
-                toogle_top_navbar ? 'top-[75px] animate-slideIn' : 'top-[-750px] animate-slideOut'
+                toogle_top_navbar ? 'top-20 animate-slideIn opacity-100 ' : 'top-[-750px] animate-slideOut'
             )}>
                 <ul className='flex md:flex-row flex-col font-mono font-bold gap-3 text-xl'>
                     {topNavbarData.map((item, index) => (
