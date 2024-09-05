@@ -13,7 +13,8 @@ import { FaCashRegister } from "react-icons/fa6";
 import { GiFarmer } from "react-icons/gi";
 import { BiNotepad } from "react-icons/bi";
 import type { RootState } from '@/app/store'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { togleSideNavbar } from '@/Redux/navSlice'
 
 
 interface SublistItem {
@@ -97,6 +98,7 @@ const sideNavData: SideNavItem[] = [
 ];
 
 const SideNavbar: React.FC = () => {
+    const dispatch = useDispatch()
     const pathname = usePathname();
     const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
 
@@ -113,10 +115,12 @@ const SideNavbar: React.FC = () => {
     return (
         <div className={
             cn(
-                'fixed top-20 h-screen bg-gray-100 transition-all duration-300 ease-in-out ',
-                toogle_top_navbar ? "w-0 translate-x-[-100%] overflow-hidden" : toggle_side_navbar ? 'translate-x-0 w-60' : 'translate-x-0 w-16'
+                'fixed top-20 h-screen bg-gray-100 transition-all duration-300 ease-in-out z-50',
+                toogle_top_navbar ? "w-0 translate-x-[-100%] overflow-hidden" : toggle_side_navbar ? 'translate-x-0 w-60' : 'translate-x-0 md:w-16 w-0'
             )
-        }>
+        }
+            // onClick={() => dispatch(togleSideNavbar(!toggle_side_navbar)) }
+        >
             <div className=' p-3 flex-grow h-[90%] overflow-y-auto flex flex-col' >
                 <ul className="" >
                     {
@@ -129,7 +133,10 @@ const SideNavbar: React.FC = () => {
                                             pathname === item.href && "bg-gray-200 text-rose-600 border-l-4 border-rose-600"
                                         )
                                     }
-                                    onClick={() => item.sublist && handleToggle(item.href)} // Ensure toggle happens on click
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        item.sublist && handleToggle(item.href)
+                                    }} // Ensure toggle happens on click onClick={() => { dispatch(togleSideNavbar(!toggle_side_navbar)) }}
                                 >
                                     <Link href={item.href} className="flex w-full items-center">
                                         <span className={
@@ -180,7 +187,7 @@ const SideNavbar: React.FC = () => {
                                                         <Link
                                                             href={subItem.href}
                                                             className={cn(
-                                                                "flex items-center space-x-4 p-2 rounded-lg transition-colors duration-300 ease-in-out hover:bg-white my-1 hover:text-rose-850",
+                                                                "flex items-center space-x-4 p-2 rounded-lg transition-colors duration-300 ease-in-out hover:bg-white my-1 hover:text-rose-800",
                                                                 pathname === subItem.href ? "bg-white text-rose-800" : "text-gray-600"
                                                             )}
                                                         >

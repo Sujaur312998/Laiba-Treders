@@ -52,12 +52,13 @@ const TopNavbar = () => {
                         'text-2xl mx-3 transition duration-150 ease-out',
                         toggle_side_navbar ? "rotate-180" : "rotate-0"
                     )}
+                    title='Navbar'
                     onClick={() => { dispatch(togleSideNavbar(!toggle_side_navbar)) }}
                     aria-label={toggle_side_navbar ? "Close side navigation" : "Open side navigation"}
                 >
                     <FaChevronRight />
                 </button>
-                <div className="font-mono text-rose-800 text-3xl font-extrabold">
+                <div className="font-mono text-rose-800 text-lg md:text-3xl font-extrabold">
                     Laiba Treders
                 </div>
             </div>
