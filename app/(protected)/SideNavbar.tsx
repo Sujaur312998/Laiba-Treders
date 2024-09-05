@@ -12,9 +12,8 @@ import { usePathname } from 'next/navigation';
 import { FaCashRegister } from "react-icons/fa6";
 import { GiFarmer } from "react-icons/gi";
 import { BiNotepad } from "react-icons/bi";
-import type { RootState } from '@/app/store'
-import { useSelector, useDispatch } from "react-redux"
-import { togleSideNavbar } from '@/Redux/navSlice'
+import { useAppDispatch, useAppSelector } from "@/Redux/store";
+import { togleSideNavbar } from '@/Redux/slice/navSlice'
 
 
 interface SublistItem {
@@ -98,7 +97,7 @@ const sideNavData: SideNavItem[] = [
 ];
 
 const SideNavbar: React.FC = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const pathname = usePathname();
     const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
 
@@ -108,9 +107,8 @@ const SideNavbar: React.FC = () => {
             [href]: !prev[href]
         }));
     };
-
-    const toogle_top_navbar = useSelector((state: RootState) => state.navSlice.toogle_top_navbar)
-    const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
+    const toggle_side_navbar = useAppSelector((state) => state.navState.toggle_side_navbar);
+    const toogle_top_navbar = useAppSelector((state) => state.navState.toogle_top_navbar);
 
     return (
         <div className={
@@ -119,7 +117,7 @@ const SideNavbar: React.FC = () => {
                 toogle_top_navbar ? "w-0 translate-x-[-100%] overflow-hidden" : toggle_side_navbar ? 'translate-x-0 w-60' : 'translate-x-0 md:w-16 w-0'
             )
         }
-            // onClick={() => dispatch(togleSideNavbar(!toggle_side_navbar)) }
+            onClick={() => dispatch(togleSideNavbar(!toggle_side_navbar)) }
         >
             <div className=' p-3 flex-grow h-[90%] overflow-y-auto flex flex-col' >
                 <ul className="" >

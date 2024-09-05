@@ -1,11 +1,14 @@
 "use client";
-import { store } from "./store";
-const { Provider } = require("react-redux");
 
-export const Providers = ({ children }: Readonly<{
-    children: React.ReactNode;
-}>) => {
-    return <Provider store={store}>
-        {children}
-    </Provider>
+import { Provider } from "react-redux";
+import { store } from "../Redux/store";
+import { persistStore } from "redux-persist";
+
+persistStore(store);
+export default function ReduxProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <Provider store={store}>{children}</Provider>;
 }

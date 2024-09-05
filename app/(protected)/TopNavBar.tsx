@@ -1,12 +1,11 @@
 "use client";
-import type { RootState } from '@/app/store'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { FaChevronRight } from "react-icons/fa";
 import { HiOutlineMenu } from "react-icons/hi";
 import { RiNotification4Line } from "react-icons/ri";
-import { togleSideNavbar, toggleTopNavBar } from '@/Redux/navSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { togleSideNavbar, toggleTopNavBar } from '@/Redux/slice/navSlice'
+import { useAppDispatch, useAppSelector } from "@/Redux/store";
 
 const topNavbarData = [
     {
@@ -38,13 +37,13 @@ const topNavbarData = [
 ]
 
 const TopNavbar = () => {
-    const dispatch = useDispatch()
-    const toogle_top_navbar = useSelector((state: RootState) => state.navSlice.toogle_top_navbar)
-    const toggle_side_navbar = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
+    const dispatch = useAppDispatch()
+    const toggle_side_navbar = useAppSelector((state) => state.navState.toggle_side_navbar);
+    const toogle_top_navbar = useAppSelector((state) => state.navState.toogle_top_navbar);
 
     return (
         <nav className='flex fixed items-center justify-between w-full h-20 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-sky-200 to-gray-100 z-50'>
-            
+
             {/* 1st section */}
             <div className='flex'>
                 <button

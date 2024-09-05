@@ -4,9 +4,9 @@ import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavBar";
 import { usePathname } from 'next/navigation';
 import { FaAngleRight, FaArrowCircleRight } from "react-icons/fa";
-import type { RootState } from '@/app/store'
 import { cn } from "@/lib/utils";
 import { IoHome } from "react-icons/io5";
+import { useAppDispatch, useAppSelector } from "@/Redux/store";
 
 interface ProtectedLayoutProps {
     children: React.ReactNode;
@@ -16,8 +16,8 @@ const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
     const pathname = usePathname();
     const pathSegments = pathname?.split("/") // Remove empty segments
 
-    const toogle_top_navbar : any = useSelector((state: RootState) => state.navSlice.toogle_top_navbar)
-    const toggle_side_navbar : any = useSelector((state: RootState) => state.navSlice.toggle_side_navbar)
+    const toggle_side_navbar = useAppSelector((state) => state.navState.toggle_side_navbar);
+    const toogle_top_navbar = useAppSelector((state) => state.navState.toogle_top_navbar);
 
     return (
         <div className="select-none relative">

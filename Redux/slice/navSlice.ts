@@ -11,14 +11,14 @@ const initialState: CounterState = {
     toogle_top_navbar: false
 }
 
-export const counterSlice = createSlice({
+export const navSlice = createSlice({
     name: 'TOGGLE_SIDE_NAVBAR',
     initialState,
     reducers: {
-        togleSideNavbar: (state,action) => {
+        togleSideNavbar: (state,action:PayloadAction<boolean>) => {
             state.toggle_side_navbar=action.payload
         },
-        toggleTopNavBar: (state,action) => {
+        toggleTopNavBar: (state,action:PayloadAction<boolean>) => {
             state.toogle_top_navbar=action.payload
             
         }
@@ -26,6 +26,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { togleSideNavbar, toggleTopNavBar } = counterSlice.actions
+export const { togleSideNavbar, toggleTopNavBar } = navSlice.actions
 
-export default counterSlice.reducer
+export default navSlice.reducer
