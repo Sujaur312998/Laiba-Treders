@@ -5,12 +5,7 @@ import bcrypt from 'bcryptjs';
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { name, f_name, phoneNo, address_village, address_home, password } = req.body;
-
     try {
-
-      // Ensure phoneNo is an integer
-      const phoneNoInt = parseInt(phoneNo);
-
       // Hash the password
       const hash_password = await bcrypt.hash(password, 10);
 
@@ -19,7 +14,7 @@ export default async function handler(req, res) {
         data: {
           name,
           f_name,
-          phoneNo: phoneNoInt,
+          phoneNo,
           address_village,
           address_home,
           hash_password

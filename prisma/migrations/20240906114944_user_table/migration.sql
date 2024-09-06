@@ -7,7 +7,7 @@ CREATE TABLE "User" (
     "short_id" SERIAL NOT NULL,
     "name" TEXT,
     "f_name" TEXT,
-    "phoneNo" INTEGER NOT NULL,
+    "phoneNo" TEXT NOT NULL,
     "address_village" TEXT,
     "address_home" TEXT NOT NULL,
     "hash_password" TEXT,

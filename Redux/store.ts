@@ -1,20 +1,3 @@
-// import { configureStore } from '@reduxjs/toolkit'
-// import navSlice from '@/Redux/navSlice'
-
-// export const store = configureStore({
-//   reducer: {
-//     navSlice
-//   },
-// })
-
-// // Infer the `RootState` and `AppDispatch` types from the store itself
-// export type RootState = ReturnType<typeof store.getState>
-// // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-// export type AppDispatch = typeof store.dispatch
-
-
-
-
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";

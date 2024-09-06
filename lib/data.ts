@@ -1,5 +1,6 @@
 export const phoneRegExp = /^(?:(?:\+|00)88|01)?\d{11}$/
 export const host= 'http://localhost:3000'
+export const hostIP= 'http://192.168.2.103:3000'
 
 export const villageName = [
     {

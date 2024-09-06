@@ -8,7 +8,6 @@ import {
     DEFAULT_LOGIN_REDIRECT
 } from '@/routes'
 import { jwtDecode } from "jwt-decode";
-import { signOut } from '@/auth';
 
 
 const { auth } = NextAuth(authConfig) as NextAuthResult
@@ -31,7 +30,7 @@ export const  authMiddleware =  auth(
         let isRefreshToken: any = !!refreshToken ? jwtDecode(refreshToken) : false
         isRefreshToken = isRefreshToken.exp * 1000 > new Date().getTime()
 
-        let isLoggedIn = isAccessToken || isRefreshToken || true
+        let isLoggedIn = isAccessToken || isRefreshToken 
 
         console.log(isAccessToken, isRefreshToken, isLoggedIn);
 

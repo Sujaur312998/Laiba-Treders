@@ -32,7 +32,7 @@ const formData = {
 const Toast = Swal.mixin({
     toast: true,
     showConfirmButton: true,
-    timer: 1500,
+    timer: 2000,
     timerProgressBar: true,
     didOpen: (toast) => {
         toast.onmouseenter = Swal.stopTimer;
@@ -48,10 +48,10 @@ const successToast = (data: any) => {
         confirmButtonText: 'OK',
     });
 }
-const failedToast = () => {
+const failedToast = ({ msg }: any) => {
     Toast.fire({
         title: "Invalid Action!",
-        text: "Something Went Wrong",
+        text: msg,
         icon: "question"
     });
 }
@@ -81,8 +81,8 @@ const RegisterForm = () => {
                     form.reset()
                 })
                 .catch(err => {
-                    failedToast()
                     setIsLoading(false)
+                    failedToast({ msg: err.response?.data.message })
                 })
         } catch (error) {
             console.log(error);
@@ -93,24 +93,20 @@ const RegisterForm = () => {
         setIsLoading(true)
         try {
             axios.post('/api/auth/checkUserPhoneNo', { phoneNo: values.phoneNo })
-                .then(res => {
+                .then((res) => {
                     if (res.status === 200) {
                         createUser(values)
-                    } else {
-                        setIsLoading(false)
-                        failedToast()
                     }
                 })
                 .catch(err => {
-                    failedToast()
-                }
-                )
+                    setIsLoading(false)
+                    failedToast({ msg: err.response?.data.message })
+                })
 
-        } catch (error) {
-            failedToast()
+        } catch ({ error }: any) {
+            failedToast({ msg: error.response?.data.message })
             console.error('Network error:', error);
         }
-
     }
     return (
         <div>
@@ -125,7 +121,7 @@ const RegisterForm = () => {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}
                         className={
-                            cn("space-y-6", isLoading ? 'blur-sm' : '')
+                            cn("space-y-2", isLoading ? 'blur-sm' : '')
                         }>
 
                         {
@@ -162,7 +158,7 @@ const RegisterForm = () => {
                             name="f_name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>গ্রাহকের পিতার নাম</FormLabel>
+                                    <FormLabel>গ্রাহকের পিতার বা স্বামীর নাম</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}

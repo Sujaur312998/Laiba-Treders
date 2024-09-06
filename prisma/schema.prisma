@@ -29,7 +29,7 @@ model User {
 
   name              String?
   f_name            String?
-  phoneNo           Int      @unique
+  phoneNo           String      @unique
   address_village   String?
   address_home      String
   hash_password     String?

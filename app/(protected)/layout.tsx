@@ -22,10 +22,10 @@ const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
     return (
         <div className="select-none relative">
             <TopNavbar />
-            <div className="flex   ">
+            <div className="flex">
                 <SideNavbar />
                 <div className={
-                    cn("flex-1 relative top-20 transition-all duration-500 ", toogle_top_navbar ? "left-0 " : toggle_side_navbar ? 'left-64' : 'left-0 md:left-16 md:mx-5')
+                    cn("flex-1 relative top-20 transition-all duration-500 ", toogle_top_navbar ? "left-0 mx-2 " : toggle_side_navbar ? 'left-64' : 'left-0 mx-2 md:left-16')
                 }>
                     <div className="flex fixed py-2 w-full z-30  bg-white items-center space-x-2 mb-4 gap-5 md:gap-16  ">
                         <span className="flex items-center text-rose-800 font-semibold capitalize">

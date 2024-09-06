@@ -27,7 +27,7 @@ const CardWrapper = ({
 }: State) => {
     return (
         <Card className='select-none'>
-            <CardHeader className='flex justify-center items-center'>
+            <CardHeader className='flex justify-center items-center mt-5'>
                 <CardTitle className='text-rose-900 text-4xl md:text-6xl font-extrabold '
                 >
                     {headerTitle}

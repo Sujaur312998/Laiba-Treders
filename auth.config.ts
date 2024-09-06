@@ -25,7 +25,7 @@ export default {
                     try {
                         const user = await prisma.user.findUnique({
                             where: {
-                                phoneNo: parseInt(phoneNo)
+                                phoneNo: phoneNo
                             },
                             select: {
                                 id: true,
@@ -40,12 +40,12 @@ export default {
                                 delete user.hash_password
 
                                 const accessToken: string = jwt.sign(
-                                    { userId: user.id }, secret, { expiresIn: '1d' }
+                                    { userId: user.id }, secret, { expiresIn: '3d' }
                                 )
 
 
                                 const refreshToken = jwt.sign(
-                                    { userId: user.id }, secret, { expiresIn: '7d' }
+                                    { userId: user.id }, secret, { expiresIn: '10d' }
                                 )
 
                                 user.accessToken = accessToken
