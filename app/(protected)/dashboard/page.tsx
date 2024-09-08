@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Product"
+    title: {
+        default:"Dashboard",
+        // absolute:"",
+        template:"Dashboard %s",
+    }
 };
 
 const Dashboard=()=>{

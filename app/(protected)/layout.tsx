@@ -1,12 +1,11 @@
 'use client';
-import { useSelector } from "react-redux";
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavBar";
 import { usePathname } from 'next/navigation';
 import { FaAngleRight, FaArrowCircleRight } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { IoHome } from "react-icons/io5";
-import { useAppDispatch, useAppSelector } from "@/Redux/store";
+import { useAppSelector } from "@/Redux/store";
 
 interface ProtectedLayoutProps {
     children: React.ReactNode;
@@ -14,7 +13,7 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
     const pathname = usePathname();
-    const pathSegments = pathname?.split("/") // Remove empty segments
+    const pathSegments = pathname?.split("/") 
 
     const toggle_side_navbar = useAppSelector((state) => state.navState.toggle_side_navbar);
     const toogle_top_navbar = useAppSelector((state) => state.navState.toogle_top_navbar);
@@ -48,7 +47,7 @@ const ProtectedLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
                             ))}
                         </div>
                     </div>
-                    <div className="absolute top-10 w-full">
+                    <div className="absolute top-10 w-full overflow-x-hidden">
                         {children}
                     </div>
                 </div>

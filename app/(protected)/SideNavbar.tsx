@@ -12,8 +12,8 @@ import { usePathname } from 'next/navigation';
 import { FaCashRegister } from "react-icons/fa6";
 import { GiFarmer } from "react-icons/gi";
 import { BiNotepad } from "react-icons/bi";
-import {  useAppSelector } from "@/Redux/store";
-
+import { useAppDispatch, useAppSelector } from "@/Redux/store";
+import { togleSideNavbar } from '@/Redux/slice/navSlice'
 
 interface SublistItem {
     href: string;
@@ -32,11 +32,6 @@ const sideNavData: SideNavItem[] = [
         icon: <TbLayoutDashboardFilled className="m-auto" />,
         href: "/dashboard",
         title: "Dashboard",
-        sublist: [
-            { href: "/dashboard/overview", title: "Overview" },
-            { href: "/dashboard/salesreports", title: "Sales Reports" },
-            { href: "/dashboard/analytics", title: "Analytics" },
-        ]
     },
     {
         icon: <PiWarehouseFill className="m-auto" />,
@@ -51,16 +46,20 @@ const sideNavData: SideNavItem[] = [
     {
         icon: <SiMaterialformkdocs className="m-auto" />,
         href: "/product",
-        title: "Product"
+        title: "Product",
+        sublist: [
+            { href: '/product/addProduct', title: 'Add Product' },
+            { href: '/product/search ', title: 'Search Prooduct' },
+        ]
     },
     {
         icon: <FaCashRegister className="m-auto" />,
-        href: "/cashmemo",
-        title: "Cash Memo",
+        href: "/invoice",
+        title: "Invoice",
         sublist: [
-            { href: '/newmemo', title: "Create new" },
-            { href: '/searchmemo', title: "Search Cash Memo" },
-            { href: "/updatememo", title: 'Update memo' }
+            { href: '/invoice/new', title: "Create new" },
+            { href: '/invoice/search', title: "Search Invoice" },
+            { href: "/invoice/update", title: 'Update Invoice' }
         ]
     },
     {
@@ -68,7 +67,7 @@ const sideNavData: SideNavItem[] = [
         href: "/customer",
         title: "Customer",
         sublist: [
-            { href: "/newCustomer", title: "New Customer" },
+            { href: "/new", title: "New Customer" },
             { href: "/customer/list", title: "List" }
         ]
     },
@@ -96,6 +95,7 @@ const sideNavData: SideNavItem[] = [
 ];
 
 const SideNavbar: React.FC = () => {
+    const dispatch = useAppDispatch()
     const pathname = usePathname();
     const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
 
@@ -111,8 +111,8 @@ const SideNavbar: React.FC = () => {
     return (
         <div className={
             cn(
-                'fixed top-20 h-screen bg-gray-100 transition-all duration-300 ease-in-out z-50  overflow-hidden',
-                toogle_top_navbar ? "w-0  overflow-hidden" : toggle_side_navbar ? 'translate-x-0 w-60' : 'translate-x-0 md:w-16 w-0'
+                'fixed top-20 h-screen bg-gray-100 transition-all duration-300 ease-in-out z-50  ',
+                toogle_top_navbar ? "w-0 " : toggle_side_navbar ? 'translate-x-0 w-60' : 'translate-x-0 md:w-16 w-0'
             )
         }>
             <div className=' p-3 flex-grow h-[90%] overflow-y-auto flex flex-col' >
@@ -130,6 +130,7 @@ const SideNavbar: React.FC = () => {
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         item.sublist && handleToggle(item.href)
+                                        dispatch(togleSideNavbar(true))
                                     }} // Ensure toggle happens on click 
                                 >
                                     <Link href={item.href} className="flex w-full items-center">

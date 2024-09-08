@@ -4,7 +4,6 @@ export const metadata: Metadata = {
     title: "Customer"
 };
 
-
 const Customer=()=>{
     return(
         <div>
