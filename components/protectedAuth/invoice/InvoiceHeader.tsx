@@ -7,7 +7,7 @@ const InvoiceHeader = () => {
     return (
         <div>
             <header className="flex justify-between items-center mb-8">
-                <div className="w-[75%]">
+                <div className="w-[70%]">
                     <h1 className="text-3xl font-bold mb-2 text-rose-800">M/S Laiba Treders</h1>
                     <h2 className="text-5xl font-bold text-gray-800">INVOICE</h2>
                 </div>
